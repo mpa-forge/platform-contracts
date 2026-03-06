@@ -9,9 +9,19 @@ Contracts repository for protobuf schemas and generated clients in the platform 
 - `docs/`: contract-specific documentation
 - `scripts/`: local utility and developer scripts
 
+## Toolchain
+- Node.js `24.13.1`
+- npm `11.8.0`
+- Buf `1.65.0`
+- Version pin source: `.tool-versions` and `package.json`
+
 ## Setup
-This repository is currently at the skeleton stage.
-Buf CLI wiring, generation commands, and package publishing workflow will be added in later tasks.
+Run one of the following bootstrap commands from the repository root:
+- PowerShell: `./scripts/bootstrap.ps1`
+- POSIX shell: `./scripts/bootstrap.sh`
+
+Bootstrap validates the pinned toolchain and installs npm dependencies via `npm ci`.
+If `mise` or `asdf` is available, the script will use it to install the pinned toolchain automatically.
 
 ## Run
 This repository does not expose a runtime service.
