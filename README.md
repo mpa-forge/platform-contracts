@@ -3,25 +3,31 @@
 Contracts repository for protobuf schemas and generated clients in the platform blueprint.
 
 ## Structure
-- `proto/`: protobuf source definitions
-- `gen/`: generated artifacts produced by contract tooling
-- `packages/`: publishable client package outputs
-- `docs/`: contract-specific documentation
-- `scripts/`: local utility and developer scripts
+- proto/: protobuf source definitions
+- gen/: generated artifacts produced by contract tooling
+- packages/: publishable client package outputs
+- docs/: contract-specific documentation
+- scripts/: local utility and developer scripts
 
 ## Toolchain
-- Node.js `24.13.1`
-- npm `11.8.0`
-- Buf `1.65.0`
-- Version pin source: `.tool-versions` and `package.json`
+- GNU Make (or a compatible make implementation)
+- Node.js 24.13.1
+- npm 11.8.0
+- Buf 1.65.0
+- Version pin source: .tool-versions and package.json
 
 ## Setup
-Run one of the following bootstrap commands from the repository root:
-- PowerShell: `./scripts/bootstrap.ps1`
-- POSIX shell: `./scripts/bootstrap.sh`
+Before running bootstrap:
+- Required: GNU Make (or a compatible make implementation)
+- Recommended: mise or sdf for automatic tool installation from .tool-versions
+- Fallback: manually install the pinned tool versions listed above
 
-Bootstrap validates the pinned toolchain and installs npm dependencies via `npm ci`.
-If `mise` or `asdf` is available, the script will use it to install the pinned toolchain automatically.
+Run the bootstrap command from the repository root:
+- Make: make bootstrap
+
+Bootstrap validates the pinned toolchain and installs npm dependencies via 
+pm ci.
+If mise or sdf is available, the script will use it to install the pinned toolchain automatically.
 
 ## Run
 This repository does not expose a runtime service.
