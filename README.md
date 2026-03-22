@@ -71,6 +71,17 @@ This repository uses Buf CLI as the contract policy and validation tool.
   - no paid remote plugin features
   - local and CI use Buf CLI directly
 
+## Current Contract Scope
+
+The first real contract baseline is a generic authenticated user lookup:
+
+- package: `blueprint.user.v1`
+- service: `UserService`
+- unary RPC: `GetCurrentUser`
+
+This keeps the initial Phase 2 contract reusable across applications built from
+the blueprint while still exercising a protected frontend-to-API path.
+
 ## CI Baseline
 
 The repository includes a focused GitHub Actions workflow for Buf checks:
