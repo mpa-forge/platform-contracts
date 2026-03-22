@@ -46,9 +46,48 @@ If `mise` or `asdf` is available, the script will use it to install the pinned t
 ## Run
 
 This repository does not expose a runtime service.
-Generation and validation commands will be added in later Phase 1 and Phase 2 tasks.
+Use contract validation and generation commands instead:
+
+- `make buf-lint`
+- `make buf-breaking`
+- `make contracts-check`
+- `make buf-generate`
+
+## Buf Baseline
+
+This repository uses Buf CLI as the contract policy and validation tool.
+
+- `buf.yaml` defines:
+  - module path: `proto/`
+  - module name: `buf.build/mpa-forge/platform-contracts`
+  - lint policy: `STANDARD`
+  - breaking policy: `FILE`
+- `buf.gen.yaml` defines the future local-plugin generation baseline for:
+  - `protoc-gen-go`
+  - `protoc-gen-connect-go`
+  - `protoc-gen-es`
+- Baseline policy avoids paid BSR dependencies:
+  - no paid remote dependencies
+  - no paid remote plugin features
+  - local and CI use Buf CLI directly
+
+## CI Baseline
+
+The repository includes a focused GitHub Actions workflow for Buf checks:
+
+- `buf lint`
+- `buf breaking` against `origin/main` once the baseline exists on `main`
+
+This keeps the contract-policy baseline enforceable before the broader Phase 4 CI rollout.
 
 ## Test
 
-No automated validation commands are configured yet.
-Contract linting, formatting, and breaking-change checks will be introduced incrementally in later tasks.
+Contract validation commands:
+
+- `make contracts-check`
+- `make contracts-check-ci`
+
+Breaking-change checks compare the current branch against `main`.
+The initial bootstrap branch skips the breaking check if the target branch does not yet
+contain a Buf baseline. After this task is merged, future branches compare against the
+baseline on `main`. CI compares against `origin/main` after fetching repository history.

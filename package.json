@@ -5,6 +5,10 @@
   "packageManager": "npm@11.8.0",
   "scripts": {
     "bootstrap": "make bootstrap",
+    "contracts:lint": "buf lint",
+    "contracts:breaking": "bash scripts/buf-breaking.sh main",
+    "contracts:check": "make contracts-check",
+    "contracts:generate": "buf generate",
     "lint": "eslint . --max-warnings=0",
     "format": "prettier --write .",
     "format:check": "prettier --check ."
