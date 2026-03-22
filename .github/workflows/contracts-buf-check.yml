@@ -1,0 +1,41 @@
+name: contracts-buf-check
+
+on:
+  pull_request:
+    paths:
+      - "buf.yaml"
+      - "buf.gen.yaml"
+      - "proto/**"
+      - ".github/workflows/contracts-buf-check.yml"
+  push:
+    branches:
+      - main
+    paths:
+      - "buf.yaml"
+      - "buf.gen.yaml"
+      - "proto/**"
+      - ".github/workflows/contracts-buf-check.yml"
+
+jobs:
+  buf-check:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v5
+        with:
+          fetch-depth: 0
+
+      - name: Install Buf CLI
+        env:
+          BUF_VERSION: "1.65.0"
+        run: |
+          set -euo pipefail
+          curl -fsSL "https://github.com/bufbuild/buf/releases/download/v${BUF_VERSION}/buf-Linux-x86_64" -o /usr/local/bin/buf
+          chmod +x /usr/local/bin/buf
+          buf --version
+
+      - name: Buf lint
+        run: buf lint
+
+      - name: Buf breaking
+        run: bash scripts/buf-breaking.sh origin/main

@@ -3,8 +3,9 @@ SHELL := bash
 NODE_VERSION := 24.13.1
 NPM_VERSION := 11.8.0
 BUF_VERSION := 1.65.0
+BUF_BREAKING_BRANCH ?= main
 
-.PHONY: help bootstrap doctor install-tools check-tools print-toolchain install-dev-tools precommit-install precommit-run lint format format-check repo-lint repo-format repo-format-check
+.PHONY: help bootstrap doctor install-tools check-tools print-toolchain install-dev-tools precommit-install precommit-run lint format format-check repo-lint repo-format repo-format-check buf-lint buf-breaking buf-generate contracts-check contracts-check-ci
 
 help:
 	@echo "Targets:"
@@ -16,6 +17,11 @@ help:
 	@echo "  install-dev-tools Install Python and npm development tooling"
 	@echo "  precommit-install Install git pre-commit hooks"
 	@echo "  precommit-run     Run the configured pre-commit checks on all files"
+	@echo "  buf-lint          Run Buf lint checks"
+	@echo "  buf-breaking      Run Buf breaking-change checks against $(BUF_BREAKING_BRANCH)"
+	@echo "  buf-generate      Run Buf code generation using local plugins"
+	@echo "  contracts-check   Run the full local contracts validation baseline"
+	@echo "  contracts-check-ci Run the CI-safe contracts validation baseline"
 	@echo "  lint              Run repo lint checks"
 	@echo "  format            Apply repo formatting"
 	@echo "  format-check      Check repo formatting without writing changes"
@@ -93,8 +99,24 @@ format: repo-format
 
 format-check: repo-format-check
 
+buf-lint:
+	buf lint
+
+buf-breaking:
+	bash scripts/buf-breaking.sh "$(BUF_BREAKING_BRANCH)"
+
+buf-generate:
+	buf generate
+
+contracts-check: buf-lint buf-breaking
+
+contracts-check-ci:
+	buf lint
+	bash scripts/buf-breaking.sh "origin/main"
+
 repo-lint:
 	npm run lint
+	$(MAKE) contracts-check
 
 repo-format:
 	npm run format
