@@ -95,14 +95,17 @@ not depend on globally installed plugin versions.
 
 ## Current Contract Scope
 
-The first real contract baseline is a generic authenticated user lookup:
+The first real contract baseline is a generic authenticated user flow:
 
 - package: `blueprint.user.v1`
 - service: `UserService`
-- unary RPC: `GetCurrentUser`
+- unary RPCs:
+  - `EnsureCurrentUserProfile`
+  - `GetCurrentUser`
 
 This keeps the initial Phase 2 contract reusable across applications built from
-the blueprint while still exercising a protected frontend-to-API path.
+the blueprint while still exercising a protected frontend-to-API path and an
+explicit local-profile bootstrap step.
 
 ## CI Baseline
 

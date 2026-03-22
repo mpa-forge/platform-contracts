@@ -23,6 +23,8 @@ The package re-exports generated messages and service definitions from:
 Current exported symbols include:
 
 - `UserService`
+- `EnsureCurrentUserProfileRequest`
+- `EnsureCurrentUserProfileResponse`
 - `GetCurrentUserRequest`
 - `GetCurrentUserResponse`
 - `UserProfile`
@@ -42,6 +44,7 @@ Example:
 import { createClient } from "@connectrpc/connect";
 import { createConnectTransport } from "@connectrpc/connect-web";
 import {
+  EnsureCurrentUserProfileRequest,
   GetCurrentUserRequest,
   UserService,
 } from "@mpa-forge/platform-contracts-client";
@@ -53,6 +56,7 @@ const transport = createConnectTransport({
 
 const client = createClient(UserService, transport);
 
+await client.ensureCurrentUserProfile(new EnsureCurrentUserProfileRequest());
 const response = await client.getCurrentUser(new GetCurrentUserRequest());
 
 console.log(response.user?.displayName);
@@ -83,8 +87,10 @@ The intended consumer behavior does not change:
 
 ## Current Scope And Limits
 
-Today this package documents and exports the first generic authenticated endpoint:
+Today this package documents and exports the first generic authenticated user
+flow:
 
+- `UserService.EnsureCurrentUserProfile`
 - `UserService.GetCurrentUser`
 
 The package is generated and buildable now, but full end-to-end use depends on

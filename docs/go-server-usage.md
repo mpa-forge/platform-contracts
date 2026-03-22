@@ -135,8 +135,9 @@ returns:
 - the mount path
 - an `http.Handler`
 
-For the current contract, the generated procedure path includes:
+For the current contract, the generated procedure paths include:
 
+- `/blueprint.user.v1.UserService/EnsureCurrentUserProfile`
 - `/blueprint.user.v1.UserService/GetCurrentUser`
 
 Backend code should not hand-build these paths when the generated constants and
@@ -144,12 +145,12 @@ handler constructor already provide the contract-safe values.
 
 ## Current Scope And Limits
 
-Today this documents the first generic authenticated endpoint:
+Today this documents the first generic authenticated user flow:
 
+- `UserService.EnsureCurrentUserProfile`
 - `UserService.GetCurrentUser`
 
 The real API runtime wiring still belongs to later tasks:
 
 - `P2-T04`: API runtime skeleton with `chi` + `connect-go`
 - `P2-T05`: Clerk JWT verification middleware
-

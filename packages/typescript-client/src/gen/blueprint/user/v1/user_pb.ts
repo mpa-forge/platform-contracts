@@ -7,6 +7,80 @@ import type { BinaryReadOptions, FieldList, JsonReadOptions, JsonValue, PartialM
 import { Message, proto3 } from "@bufbuild/protobuf";
 
 /**
+ * EnsureCurrentUserProfileRequest is empty because the user to provision comes
+ * from the authenticated request context.
+ *
+ * @generated from message blueprint.user.v1.EnsureCurrentUserProfileRequest
+ */
+export class EnsureCurrentUserProfileRequest extends Message<EnsureCurrentUserProfileRequest> {
+  constructor(data?: PartialMessage<EnsureCurrentUserProfileRequest>) {
+    super();
+    proto3.util.initPartial(data, this);
+  }
+
+  static readonly runtime: typeof proto3 = proto3;
+  static readonly typeName = "blueprint.user.v1.EnsureCurrentUserProfileRequest";
+  static readonly fields: FieldList = proto3.util.newFieldList(() => [
+  ]);
+
+  static fromBinary(bytes: Uint8Array, options?: Partial<BinaryReadOptions>): EnsureCurrentUserProfileRequest {
+    return new EnsureCurrentUserProfileRequest().fromBinary(bytes, options);
+  }
+
+  static fromJson(jsonValue: JsonValue, options?: Partial<JsonReadOptions>): EnsureCurrentUserProfileRequest {
+    return new EnsureCurrentUserProfileRequest().fromJson(jsonValue, options);
+  }
+
+  static fromJsonString(jsonString: string, options?: Partial<JsonReadOptions>): EnsureCurrentUserProfileRequest {
+    return new EnsureCurrentUserProfileRequest().fromJsonString(jsonString, options);
+  }
+
+  static equals(a: EnsureCurrentUserProfileRequest | PlainMessage<EnsureCurrentUserProfileRequest> | undefined, b: EnsureCurrentUserProfileRequest | PlainMessage<EnsureCurrentUserProfileRequest> | undefined): boolean {
+    return proto3.util.equals(EnsureCurrentUserProfileRequest, a, b);
+  }
+}
+
+/**
+ * EnsureCurrentUserProfileResponse wraps the persisted user profile after the
+ * explicit bootstrap step has inserted or refreshed it locally.
+ *
+ * @generated from message blueprint.user.v1.EnsureCurrentUserProfileResponse
+ */
+export class EnsureCurrentUserProfileResponse extends Message<EnsureCurrentUserProfileResponse> {
+  /**
+   * @generated from field: blueprint.user.v1.UserProfile user = 1;
+   */
+  user?: UserProfile;
+
+  constructor(data?: PartialMessage<EnsureCurrentUserProfileResponse>) {
+    super();
+    proto3.util.initPartial(data, this);
+  }
+
+  static readonly runtime: typeof proto3 = proto3;
+  static readonly typeName = "blueprint.user.v1.EnsureCurrentUserProfileResponse";
+  static readonly fields: FieldList = proto3.util.newFieldList(() => [
+    { no: 1, name: "user", kind: "message", T: UserProfile },
+  ]);
+
+  static fromBinary(bytes: Uint8Array, options?: Partial<BinaryReadOptions>): EnsureCurrentUserProfileResponse {
+    return new EnsureCurrentUserProfileResponse().fromBinary(bytes, options);
+  }
+
+  static fromJson(jsonValue: JsonValue, options?: Partial<JsonReadOptions>): EnsureCurrentUserProfileResponse {
+    return new EnsureCurrentUserProfileResponse().fromJson(jsonValue, options);
+  }
+
+  static fromJsonString(jsonString: string, options?: Partial<JsonReadOptions>): EnsureCurrentUserProfileResponse {
+    return new EnsureCurrentUserProfileResponse().fromJsonString(jsonString, options);
+  }
+
+  static equals(a: EnsureCurrentUserProfileResponse | PlainMessage<EnsureCurrentUserProfileResponse> | undefined, b: EnsureCurrentUserProfileResponse | PlainMessage<EnsureCurrentUserProfileResponse> | undefined): boolean {
+    return proto3.util.equals(EnsureCurrentUserProfileResponse, a, b);
+  }
+}
+
+/**
  * GetCurrentUserRequest is empty because the user is resolved from the
  * authenticated request context rather than a caller-provided identifier.
  *

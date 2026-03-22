@@ -7,9 +7,23 @@ option go_package = "github.com/mpa-forge/platform-contracts/gen/go/blueprint/us
 // UserService exposes authenticated user-facing contract methods that are
 // generic enough to be reused across applications built from the blueprint.
 service UserService {
+  // EnsureCurrentUserProfile creates or refreshes the local application profile
+  // for the authenticated caller before standard read operations rely on
+  // persisted data.
+  rpc EnsureCurrentUserProfile(EnsureCurrentUserProfileRequest) returns (EnsureCurrentUserProfileResponse);
   // GetCurrentUser returns the current authenticated user profile summary for
   // the bearer token presented to the API.
   rpc GetCurrentUser(GetCurrentUserRequest) returns (GetCurrentUserResponse);
+}
+
+// EnsureCurrentUserProfileRequest is empty because the user to provision comes
+// from the authenticated request context.
+message EnsureCurrentUserProfileRequest {}
+
+// EnsureCurrentUserProfileResponse wraps the persisted user profile after the
+// explicit bootstrap step has inserted or refreshed it locally.
+message EnsureCurrentUserProfileResponse {
+  UserProfile user = 1;
 }
 
 // GetCurrentUserRequest is empty because the user is resolved from the
