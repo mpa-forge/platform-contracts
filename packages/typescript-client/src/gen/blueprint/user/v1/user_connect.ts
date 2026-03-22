@@ -3,7 +3,7 @@
 /* eslint-disable */
 // @ts-nocheck
 
-import { GetCurrentUserRequest, GetCurrentUserResponse } from "./user_pbjs";
+import { EnsureCurrentUserProfileRequest, EnsureCurrentUserProfileResponse, GetCurrentUserRequest, GetCurrentUserResponse } from "./user_pbjs";
 import { MethodKind } from "@bufbuild/protobuf";
 
 /**
@@ -15,6 +15,19 @@ import { MethodKind } from "@bufbuild/protobuf";
 export const UserService = {
   typeName: "blueprint.user.v1.UserService",
   methods: {
+    /**
+     * EnsureCurrentUserProfile creates or refreshes the local application profile
+     * for the authenticated caller before standard read operations rely on
+     * persisted data.
+     *
+     * @generated from rpc blueprint.user.v1.UserService.EnsureCurrentUserProfile
+     */
+    ensureCurrentUserProfile: {
+      name: "EnsureCurrentUserProfile",
+      I: EnsureCurrentUserProfileRequest,
+      O: EnsureCurrentUserProfileResponse,
+      kind: MethodKind.Unary,
+    },
     /**
      * GetCurrentUser returns the current authenticated user profile summary for
      * the bearer token presented to the API.

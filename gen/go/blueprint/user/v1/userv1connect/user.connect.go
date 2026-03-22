@@ -33,6 +33,9 @@ const (
 // reflection-formatted method names, remove the leading slash and convert the remaining slash to a
 // period.
 const (
+	// UserServiceEnsureCurrentUserProfileProcedure is the fully-qualified name of the UserService's
+	// EnsureCurrentUserProfile RPC.
+	UserServiceEnsureCurrentUserProfileProcedure = "/blueprint.user.v1.UserService/EnsureCurrentUserProfile"
 	// UserServiceGetCurrentUserProcedure is the fully-qualified name of the UserService's
 	// GetCurrentUser RPC.
 	UserServiceGetCurrentUserProcedure = "/blueprint.user.v1.UserService/GetCurrentUser"
@@ -40,6 +43,10 @@ const (
 
 // UserServiceClient is a client for the blueprint.user.v1.UserService service.
 type UserServiceClient interface {
+	// EnsureCurrentUserProfile creates or refreshes the local application profile
+	// for the authenticated caller before standard read operations rely on
+	// persisted data.
+	EnsureCurrentUserProfile(context.Context, *connect.Request[v1.EnsureCurrentUserProfileRequest]) (*connect.Response[v1.EnsureCurrentUserProfileResponse], error)
 	// GetCurrentUser returns the current authenticated user profile summary for
 	// the bearer token presented to the API.
 	GetCurrentUser(context.Context, *connect.Request[v1.GetCurrentUserRequest]) (*connect.Response[v1.GetCurrentUserResponse], error)
@@ -56,6 +63,12 @@ func NewUserServiceClient(httpClient connect.HTTPClient, baseURL string, opts ..
 	baseURL = strings.TrimRight(baseURL, "/")
 	userServiceMethods := v1.File_blueprint_user_v1_user_proto.Services().ByName("UserService").Methods()
 	return &userServiceClient{
+		ensureCurrentUserProfile: connect.NewClient[v1.EnsureCurrentUserProfileRequest, v1.EnsureCurrentUserProfileResponse](
+			httpClient,
+			baseURL+UserServiceEnsureCurrentUserProfileProcedure,
+			connect.WithSchema(userServiceMethods.ByName("EnsureCurrentUserProfile")),
+			connect.WithClientOptions(opts...),
+		),
 		getCurrentUser: connect.NewClient[v1.GetCurrentUserRequest, v1.GetCurrentUserResponse](
 			httpClient,
 			baseURL+UserServiceGetCurrentUserProcedure,
@@ -67,7 +80,13 @@ func NewUserServiceClient(httpClient connect.HTTPClient, baseURL string, opts ..
 
 // userServiceClient implements UserServiceClient.
 type userServiceClient struct {
-	getCurrentUser *connect.Client[v1.GetCurrentUserRequest, v1.GetCurrentUserResponse]
+	ensureCurrentUserProfile *connect.Client[v1.EnsureCurrentUserProfileRequest, v1.EnsureCurrentUserProfileResponse]
+	getCurrentUser           *connect.Client[v1.GetCurrentUserRequest, v1.GetCurrentUserResponse]
+}
+
+// EnsureCurrentUserProfile calls blueprint.user.v1.UserService.EnsureCurrentUserProfile.
+func (c *userServiceClient) EnsureCurrentUserProfile(ctx context.Context, req *connect.Request[v1.EnsureCurrentUserProfileRequest]) (*connect.Response[v1.EnsureCurrentUserProfileResponse], error) {
+	return c.ensureCurrentUserProfile.CallUnary(ctx, req)
 }
 
 // GetCurrentUser calls blueprint.user.v1.UserService.GetCurrentUser.
@@ -77,6 +96,10 @@ func (c *userServiceClient) GetCurrentUser(ctx context.Context, req *connect.Req
 
 // UserServiceHandler is an implementation of the blueprint.user.v1.UserService service.
 type UserServiceHandler interface {
+	// EnsureCurrentUserProfile creates or refreshes the local application profile
+	// for the authenticated caller before standard read operations rely on
+	// persisted data.
+	EnsureCurrentUserProfile(context.Context, *connect.Request[v1.EnsureCurrentUserProfileRequest]) (*connect.Response[v1.EnsureCurrentUserProfileResponse], error)
 	// GetCurrentUser returns the current authenticated user profile summary for
 	// the bearer token presented to the API.
 	GetCurrentUser(context.Context, *connect.Request[v1.GetCurrentUserRequest]) (*connect.Response[v1.GetCurrentUserResponse], error)
@@ -89,6 +112,12 @@ type UserServiceHandler interface {
 // and JSON codecs. They also support gzip compression.
 func NewUserServiceHandler(svc UserServiceHandler, opts ...connect.HandlerOption) (string, http.Handler) {
 	userServiceMethods := v1.File_blueprint_user_v1_user_proto.Services().ByName("UserService").Methods()
+	userServiceEnsureCurrentUserProfileHandler := connect.NewUnaryHandler(
+		UserServiceEnsureCurrentUserProfileProcedure,
+		svc.EnsureCurrentUserProfile,
+		connect.WithSchema(userServiceMethods.ByName("EnsureCurrentUserProfile")),
+		connect.WithHandlerOptions(opts...),
+	)
 	userServiceGetCurrentUserHandler := connect.NewUnaryHandler(
 		UserServiceGetCurrentUserProcedure,
 		svc.GetCurrentUser,
@@ -97,6 +126,8 @@ func NewUserServiceHandler(svc UserServiceHandler, opts ...connect.HandlerOption
 	)
 	return "/blueprint.user.v1.UserService/", http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		switch r.URL.Path {
+		case UserServiceEnsureCurrentUserProfileProcedure:
+			userServiceEnsureCurrentUserProfileHandler.ServeHTTP(w, r)
 		case UserServiceGetCurrentUserProcedure:
 			userServiceGetCurrentUserHandler.ServeHTTP(w, r)
 		default:
@@ -107,6 +138,10 @@ func NewUserServiceHandler(svc UserServiceHandler, opts ...connect.HandlerOption
 
 // UnimplementedUserServiceHandler returns CodeUnimplemented from all methods.
 type UnimplementedUserServiceHandler struct{}
+
+func (UnimplementedUserServiceHandler) EnsureCurrentUserProfile(context.Context, *connect.Request[v1.EnsureCurrentUserProfileRequest]) (*connect.Response[v1.EnsureCurrentUserProfileResponse], error) {
+	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("blueprint.user.v1.UserService.EnsureCurrentUserProfile is not implemented"))
+}
 
 func (UnimplementedUserServiceHandler) GetCurrentUser(context.Context, *connect.Request[v1.GetCurrentUserRequest]) (*connect.Response[v1.GetCurrentUserResponse], error) {
 	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("blueprint.user.v1.UserService.GetCurrentUser is not implemented"))

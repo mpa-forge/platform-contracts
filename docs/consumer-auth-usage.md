@@ -8,7 +8,9 @@ calling protected procedures generated from `platform-contracts`.
 Current protected contract:
 
 - service: `blueprint.user.v1.UserService`
-- procedure: `GetCurrentUser`
+- procedures:
+  - `EnsureCurrentUserProfile`
+  - `GetCurrentUser`
 
 ## Who Should Read This
 
@@ -71,6 +73,7 @@ Role behavior:
 import { createClient } from "@connectrpc/connect";
 import { createConnectTransport } from "@connectrpc/connect-web";
 import {
+  EnsureCurrentUserProfileRequest,
   GetCurrentUserRequest,
   UserService,
 } from "@mpa-forge/platform-contracts-client";
@@ -87,6 +90,7 @@ const transport = createConnectTransport({
 });
 
 const client = createClient(UserService, transport);
+await client.ensureCurrentUserProfile(new EnsureCurrentUserProfileRequest());
 const response = await client.getCurrentUser(new GetCurrentUserRequest());
 ```
 

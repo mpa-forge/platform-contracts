@@ -10,6 +10,8 @@ for GitHub Packages publishing in later release workflow tasks.
 The package currently re-exports:
 
 - `UserService`
+- `EnsureCurrentUserProfileRequest`
+- `EnsureCurrentUserProfileResponse`
 - `GetCurrentUserRequest`
 - `GetCurrentUserResponse`
 - `UserProfile`
@@ -29,6 +31,7 @@ Example:
 import { createClient } from "@connectrpc/connect";
 import { createConnectTransport } from "@connectrpc/connect-web";
 import {
+  EnsureCurrentUserProfileRequest,
   GetCurrentUserRequest,
   UserService,
 } from "@mpa-forge/platform-contracts-client";
@@ -39,6 +42,7 @@ const transport = createConnectTransport({
 });
 
 const client = createClient(UserService, transport);
+await client.ensureCurrentUserProfile(new EnsureCurrentUserProfileRequest());
 const response = await client.getCurrentUser(new GetCurrentUserRequest());
 ```
 

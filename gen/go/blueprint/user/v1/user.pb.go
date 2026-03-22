@@ -21,6 +21,90 @@ const (
 	_ = protoimpl.EnforceVersion(protoimpl.MaxVersion - 20)
 )
 
+// EnsureCurrentUserProfileRequest is empty because the user to provision comes
+// from the authenticated request context.
+type EnsureCurrentUserProfileRequest struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *EnsureCurrentUserProfileRequest) Reset() {
+	*x = EnsureCurrentUserProfileRequest{}
+	mi := &file_blueprint_user_v1_user_proto_msgTypes[0]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *EnsureCurrentUserProfileRequest) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*EnsureCurrentUserProfileRequest) ProtoMessage() {}
+
+func (x *EnsureCurrentUserProfileRequest) ProtoReflect() protoreflect.Message {
+	mi := &file_blueprint_user_v1_user_proto_msgTypes[0]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use EnsureCurrentUserProfileRequest.ProtoReflect.Descriptor instead.
+func (*EnsureCurrentUserProfileRequest) Descriptor() ([]byte, []int) {
+	return file_blueprint_user_v1_user_proto_rawDescGZIP(), []int{0}
+}
+
+// EnsureCurrentUserProfileResponse wraps the persisted user profile after the
+// explicit bootstrap step has inserted or refreshed it locally.
+type EnsureCurrentUserProfileResponse struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	User          *UserProfile           `protobuf:"bytes,1,opt,name=user,proto3" json:"user,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *EnsureCurrentUserProfileResponse) Reset() {
+	*x = EnsureCurrentUserProfileResponse{}
+	mi := &file_blueprint_user_v1_user_proto_msgTypes[1]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *EnsureCurrentUserProfileResponse) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*EnsureCurrentUserProfileResponse) ProtoMessage() {}
+
+func (x *EnsureCurrentUserProfileResponse) ProtoReflect() protoreflect.Message {
+	mi := &file_blueprint_user_v1_user_proto_msgTypes[1]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use EnsureCurrentUserProfileResponse.ProtoReflect.Descriptor instead.
+func (*EnsureCurrentUserProfileResponse) Descriptor() ([]byte, []int) {
+	return file_blueprint_user_v1_user_proto_rawDescGZIP(), []int{1}
+}
+
+func (x *EnsureCurrentUserProfileResponse) GetUser() *UserProfile {
+	if x != nil {
+		return x.User
+	}
+	return nil
+}
+
 // GetCurrentUserRequest is empty because the user is resolved from the
 // authenticated request context rather than a caller-provided identifier.
 type GetCurrentUserRequest struct {
@@ -31,7 +115,7 @@ type GetCurrentUserRequest struct {
 
 func (x *GetCurrentUserRequest) Reset() {
 	*x = GetCurrentUserRequest{}
-	mi := &file_blueprint_user_v1_user_proto_msgTypes[0]
+	mi := &file_blueprint_user_v1_user_proto_msgTypes[2]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -43,7 +127,7 @@ func (x *GetCurrentUserRequest) String() string {
 func (*GetCurrentUserRequest) ProtoMessage() {}
 
 func (x *GetCurrentUserRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_blueprint_user_v1_user_proto_msgTypes[0]
+	mi := &file_blueprint_user_v1_user_proto_msgTypes[2]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -56,7 +140,7 @@ func (x *GetCurrentUserRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use GetCurrentUserRequest.ProtoReflect.Descriptor instead.
 func (*GetCurrentUserRequest) Descriptor() ([]byte, []int) {
-	return file_blueprint_user_v1_user_proto_rawDescGZIP(), []int{0}
+	return file_blueprint_user_v1_user_proto_rawDescGZIP(), []int{2}
 }
 
 // GetCurrentUserResponse wraps the authenticated user profile returned by the
@@ -70,7 +154,7 @@ type GetCurrentUserResponse struct {
 
 func (x *GetCurrentUserResponse) Reset() {
 	*x = GetCurrentUserResponse{}
-	mi := &file_blueprint_user_v1_user_proto_msgTypes[1]
+	mi := &file_blueprint_user_v1_user_proto_msgTypes[3]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -82,7 +166,7 @@ func (x *GetCurrentUserResponse) String() string {
 func (*GetCurrentUserResponse) ProtoMessage() {}
 
 func (x *GetCurrentUserResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_blueprint_user_v1_user_proto_msgTypes[1]
+	mi := &file_blueprint_user_v1_user_proto_msgTypes[3]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -95,7 +179,7 @@ func (x *GetCurrentUserResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use GetCurrentUserResponse.ProtoReflect.Descriptor instead.
 func (*GetCurrentUserResponse) Descriptor() ([]byte, []int) {
-	return file_blueprint_user_v1_user_proto_rawDescGZIP(), []int{1}
+	return file_blueprint_user_v1_user_proto_rawDescGZIP(), []int{3}
 }
 
 func (x *GetCurrentUserResponse) GetUser() *UserProfile {
@@ -119,7 +203,7 @@ type UserProfile struct {
 
 func (x *UserProfile) Reset() {
 	*x = UserProfile{}
-	mi := &file_blueprint_user_v1_user_proto_msgTypes[2]
+	mi := &file_blueprint_user_v1_user_proto_msgTypes[4]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -131,7 +215,7 @@ func (x *UserProfile) String() string {
 func (*UserProfile) ProtoMessage() {}
 
 func (x *UserProfile) ProtoReflect() protoreflect.Message {
-	mi := &file_blueprint_user_v1_user_proto_msgTypes[2]
+	mi := &file_blueprint_user_v1_user_proto_msgTypes[4]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -144,7 +228,7 @@ func (x *UserProfile) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use UserProfile.ProtoReflect.Descriptor instead.
 func (*UserProfile) Descriptor() ([]byte, []int) {
-	return file_blueprint_user_v1_user_proto_rawDescGZIP(), []int{2}
+	return file_blueprint_user_v1_user_proto_rawDescGZIP(), []int{4}
 }
 
 func (x *UserProfile) GetUserId() string {
@@ -179,7 +263,10 @@ var File_blueprint_user_v1_user_proto protoreflect.FileDescriptor
 
 const file_blueprint_user_v1_user_proto_rawDesc = "" +
 	"\n" +
-	"\x1cblueprint/user/v1/user.proto\x12\x11blueprint.user.v1\"\x17\n" +
+	"\x1cblueprint/user/v1/user.proto\x12\x11blueprint.user.v1\"!\n" +
+	"\x1fEnsureCurrentUserProfileRequest\"V\n" +
+	" EnsureCurrentUserProfileResponse\x122\n" +
+	"\x04user\x18\x01 \x01(\v2\x1e.blueprint.user.v1.UserProfileR\x04user\"\x17\n" +
 	"\x15GetCurrentUserRequest\"L\n" +
 	"\x16GetCurrentUserResponse\x122\n" +
 	"\x04user\x18\x01 \x01(\v2\x1e.blueprint.user.v1.UserProfileR\x04user\"s\n" +
@@ -187,8 +274,9 @@ const file_blueprint_user_v1_user_proto_rawDesc = "" +
 	"\auser_id\x18\x01 \x01(\tR\x06userId\x12\x14\n" +
 	"\x05email\x18\x02 \x01(\tR\x05email\x12!\n" +
 	"\fdisplay_name\x18\x03 \x01(\tR\vdisplayName\x12\x12\n" +
-	"\x04role\x18\x04 \x01(\tR\x04role2t\n" +
-	"\vUserService\x12e\n" +
+	"\x04role\x18\x04 \x01(\tR\x04role2\xfa\x01\n" +
+	"\vUserService\x12\x83\x01\n" +
+	"\x18EnsureCurrentUserProfile\x122.blueprint.user.v1.EnsureCurrentUserProfileRequest\x1a3.blueprint.user.v1.EnsureCurrentUserProfileResponse\x12e\n" +
 	"\x0eGetCurrentUser\x12(.blueprint.user.v1.GetCurrentUserRequest\x1a).blueprint.user.v1.GetCurrentUserResponseBIZGgithub.com/mpa-forge/platform-contracts/gen/go/blueprint/user/v1;userv1b\x06proto3"
 
 var (
@@ -203,21 +291,26 @@ func file_blueprint_user_v1_user_proto_rawDescGZIP() []byte {
 	return file_blueprint_user_v1_user_proto_rawDescData
 }
 
-var file_blueprint_user_v1_user_proto_msgTypes = make([]protoimpl.MessageInfo, 3)
+var file_blueprint_user_v1_user_proto_msgTypes = make([]protoimpl.MessageInfo, 5)
 var file_blueprint_user_v1_user_proto_goTypes = []any{
-	(*GetCurrentUserRequest)(nil),  // 0: blueprint.user.v1.GetCurrentUserRequest
-	(*GetCurrentUserResponse)(nil), // 1: blueprint.user.v1.GetCurrentUserResponse
-	(*UserProfile)(nil),            // 2: blueprint.user.v1.UserProfile
+	(*EnsureCurrentUserProfileRequest)(nil),  // 0: blueprint.user.v1.EnsureCurrentUserProfileRequest
+	(*EnsureCurrentUserProfileResponse)(nil), // 1: blueprint.user.v1.EnsureCurrentUserProfileResponse
+	(*GetCurrentUserRequest)(nil),            // 2: blueprint.user.v1.GetCurrentUserRequest
+	(*GetCurrentUserResponse)(nil),           // 3: blueprint.user.v1.GetCurrentUserResponse
+	(*UserProfile)(nil),                      // 4: blueprint.user.v1.UserProfile
 }
 var file_blueprint_user_v1_user_proto_depIdxs = []int32{
-	2, // 0: blueprint.user.v1.GetCurrentUserResponse.user:type_name -> blueprint.user.v1.UserProfile
-	0, // 1: blueprint.user.v1.UserService.GetCurrentUser:input_type -> blueprint.user.v1.GetCurrentUserRequest
-	1, // 2: blueprint.user.v1.UserService.GetCurrentUser:output_type -> blueprint.user.v1.GetCurrentUserResponse
-	2, // [2:3] is the sub-list for method output_type
-	1, // [1:2] is the sub-list for method input_type
-	1, // [1:1] is the sub-list for extension type_name
-	1, // [1:1] is the sub-list for extension extendee
-	0, // [0:1] is the sub-list for field type_name
+	4, // 0: blueprint.user.v1.EnsureCurrentUserProfileResponse.user:type_name -> blueprint.user.v1.UserProfile
+	4, // 1: blueprint.user.v1.GetCurrentUserResponse.user:type_name -> blueprint.user.v1.UserProfile
+	0, // 2: blueprint.user.v1.UserService.EnsureCurrentUserProfile:input_type -> blueprint.user.v1.EnsureCurrentUserProfileRequest
+	2, // 3: blueprint.user.v1.UserService.GetCurrentUser:input_type -> blueprint.user.v1.GetCurrentUserRequest
+	1, // 4: blueprint.user.v1.UserService.EnsureCurrentUserProfile:output_type -> blueprint.user.v1.EnsureCurrentUserProfileResponse
+	3, // 5: blueprint.user.v1.UserService.GetCurrentUser:output_type -> blueprint.user.v1.GetCurrentUserResponse
+	4, // [4:6] is the sub-list for method output_type
+	2, // [2:4] is the sub-list for method input_type
+	2, // [2:2] is the sub-list for extension type_name
+	2, // [2:2] is the sub-list for extension extendee
+	0, // [0:2] is the sub-list for field type_name
 }
 
 func init() { file_blueprint_user_v1_user_proto_init() }
@@ -231,7 +324,7 @@ func file_blueprint_user_v1_user_proto_init() {
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
 			RawDescriptor: unsafe.Slice(unsafe.StringData(file_blueprint_user_v1_user_proto_rawDesc), len(file_blueprint_user_v1_user_proto_rawDesc)),
 			NumEnums:      0,
-			NumMessages:   3,
+			NumMessages:   5,
 			NumExtensions: 0,
 			NumServices:   1,
 		},
