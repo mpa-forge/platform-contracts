@@ -4,8 +4,12 @@ NODE_VERSION := 24.13.1
 NPM_VERSION := 11.8.0
 BUF_VERSION := 1.65.0
 BUF_BREAKING_BRANCH ?= main
+PROTOC_GEN_GO_VERSION := v1.36.11
+PROTOC_GEN_CONNECT_GO_VERSION := v1.19.1
+PROTOC_GEN_ES_VERSION := 1.10.1
+PROTOC_GEN_CONNECT_ES_VERSION := 1.7.0
 
-.PHONY: help bootstrap doctor install-tools check-tools print-toolchain install-dev-tools precommit-install precommit-run lint format format-check repo-lint repo-format repo-format-check buf-lint buf-breaking buf-generate contracts-check contracts-check-ci
+.PHONY: help bootstrap doctor install-tools check-tools print-toolchain install-dev-tools install-codegen-tools precommit-install precommit-run lint format format-check repo-lint repo-format repo-format-check buf-lint buf-breaking buf-generate generate-check go-generated-check ts-client-build contracts-check contracts-check-ci
 
 help:
 	@echo "Targets:"
@@ -15,18 +19,22 @@ help:
 	@echo "  check-tools       Validate pinned tool versions"
 	@echo "  print-toolchain   Print pinned tool versions"
 	@echo "  install-dev-tools Install Python and npm development tooling"
+	@echo "  install-codegen-tools Install pinned local code generation plugins"
 	@echo "  precommit-install Install git pre-commit hooks"
 	@echo "  precommit-run     Run the configured pre-commit checks on all files"
 	@echo "  buf-lint          Run Buf lint checks"
 	@echo "  buf-breaking      Run Buf breaking-change checks against $(BUF_BREAKING_BRANCH)"
 	@echo "  buf-generate      Run Buf code generation using local plugins"
+	@echo "  generate-check    Regenerate code and fail if generated artifacts drift"
+	@echo "  go-generated-check Compile generated Go artifacts"
+	@echo "  ts-client-build   Build the generated TypeScript client package"
 	@echo "  contracts-check   Run the full local contracts validation baseline"
 	@echo "  contracts-check-ci Run the CI-safe contracts validation baseline"
 	@echo "  lint              Run repo lint checks"
 	@echo "  format            Apply repo formatting"
 	@echo "  format-check      Check repo formatting without writing changes"
 
-bootstrap: install-tools check-tools install-dev-tools
+bootstrap: install-tools check-tools install-dev-tools install-codegen-tools
 	npm ci
 
 doctor:
@@ -82,10 +90,17 @@ print-toolchain:
 	@echo "Node.js $(NODE_VERSION)"
 	@echo "npm $(NPM_VERSION)"
 	@echo "Buf $(BUF_VERSION)"
+	@echo "protoc-gen-go $(PROTOC_GEN_GO_VERSION)"
+	@echo "protoc-gen-connect-go $(PROTOC_GEN_CONNECT_GO_VERSION)"
+	@echo "protoc-gen-es $(PROTOC_GEN_ES_VERSION)"
+	@echo "protoc-gen-connect-es $(PROTOC_GEN_CONNECT_ES_VERSION)"
 
 install-dev-tools:
 	python -m pip install --user -r requirements-dev.txt
 	npm install
+
+install-codegen-tools:
+	bash scripts/install-codegen-tools.sh
 
 precommit-install: install-dev-tools
 	python -m pre_commit install
@@ -105,14 +120,27 @@ buf-lint:
 buf-breaking:
 	bash scripts/buf-breaking.sh "$(BUF_BREAKING_BRANCH)"
 
-buf-generate:
-	buf generate
+buf-generate: install-codegen-tools
+	bash scripts/buf-generate.sh
 
-contracts-check: buf-lint buf-breaking
+generate-check: buf-generate
+	bash scripts/go-run.sh mod tidy
+	git diff --exit-code -- gen/go packages/typescript-client/src/gen go.mod go.sum
+
+go-generated-check:
+	bash scripts/go-run.sh test ./gen/go/...
+
+ts-client-build:
+	npm run build --workspace @mpa-forge/platform-contracts-client
+
+contracts-check: buf-lint buf-breaking generate-check go-generated-check ts-client-build
 
 contracts-check-ci:
 	buf lint
 	bash scripts/buf-breaking.sh "origin/main"
+	$(MAKE) generate-check
+	$(MAKE) go-generated-check
+	$(MAKE) ts-client-build
 
 repo-lint:
 	npm run lint

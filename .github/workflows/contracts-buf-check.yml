@@ -6,6 +6,13 @@ on:
       - "buf.yaml"
       - "buf.gen.yaml"
       - "proto/**"
+      - "gen/go/**"
+      - "packages/typescript-client/**"
+      - "scripts/**"
+      - "go.mod"
+      - "go.sum"
+      - "package.json"
+      - "package-lock.json"
       - ".github/workflows/contracts-buf-check.yml"
   push:
     branches:
@@ -14,6 +21,13 @@ on:
       - "buf.yaml"
       - "buf.gen.yaml"
       - "proto/**"
+      - "gen/go/**"
+      - "packages/typescript-client/**"
+      - "scripts/**"
+      - "go.mod"
+      - "go.sum"
+      - "package.json"
+      - "package-lock.json"
       - ".github/workflows/contracts-buf-check.yml"
 
 jobs:
@@ -34,8 +48,27 @@ jobs:
           chmod +x /usr/local/bin/buf
           buf --version
 
+      - name: Setup Go
+        uses: actions/setup-go@v6
+        with:
+          go-version-file: "go.mod"
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: "24.13.1"
+
+      - name: Install npm dependencies
+        run: npm ci
+
+      - name: Install code generation tools
+        run: bash scripts/install-codegen-tools.sh
+
       - name: Buf lint
         run: buf lint
 
       - name: Buf breaking
         run: bash scripts/buf-breaking.sh origin/main
+
+      - name: Generated code drift
+        run: make generate-check

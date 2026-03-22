@@ -3,18 +3,26 @@
   "version": "0.1.0",
   "private": true,
   "packageManager": "npm@11.8.0",
+  "workspaces": [
+    "packages/*"
+  ],
   "scripts": {
     "bootstrap": "make bootstrap",
     "contracts:lint": "buf lint",
     "contracts:breaking": "bash scripts/buf-breaking.sh main",
     "contracts:check": "make contracts-check",
-    "contracts:generate": "buf generate",
+    "contracts:generate": "bash scripts/buf-generate.sh",
+    "contracts:generate:check": "make generate-check",
+    "contracts:go:check": "make go-generated-check",
+    "contracts:ts-client:build": "make ts-client-build",
     "lint": "eslint . --max-warnings=0",
     "format": "prettier --write .",
     "format:check": "prettier --check ."
   },
   "devDependencies": {
     "@eslint/js": "^9.39.0",
+    "@bufbuild/protoc-gen-es": "1.10.1",
+    "@connectrpc/protoc-gen-connect-es": "1.7.0",
     "eslint": "^9.39.0",
     "prettier": "^3.6.2",
     "typescript": "^5.9.3",
