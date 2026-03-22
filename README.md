@@ -132,6 +132,7 @@ Publishing itself is still handled later in the release workflow tasks.
 Usage documentation:
 
 - `docs/typescript-client-usage.md`
+- `docs/go-server-usage.md`
 
 ## Test
 
