@@ -88,6 +88,7 @@ Contract validation commands:
 - `make contracts-check-ci`
 
 Breaking-change checks compare the current branch against `main`.
-The initial bootstrap branch skips the breaking check if the target branch does not yet
-contain a Buf baseline. After this task is merged, future branches compare against the
-baseline on `main`. CI compares against `origin/main` after fetching repository history.
+Before the first contract release tag (`contracts-vX.Y.Z`), the helper skips strict
+breaking enforcement so the initial contract surface can still be shaped. After the
+first release tag exists, local and CI checks compare against the target branch
+normally. CI compares against `origin/main` after fetching repository history.
