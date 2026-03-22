@@ -96,3 +96,4 @@ later tasks:
 Go server usage documentation:
 
 - `docs/go-server-usage.md`
+- `docs/consumer-auth-usage.md`
