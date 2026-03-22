@@ -16,6 +16,7 @@ Contracts repository for protobuf schemas and generated clients in the platform 
 - Node.js `24.13.1`
 - npm `11.8.0`
 - Buf `1.65.0`
+- Go with module-aware `go install` support for local Go plugin installation
 - Version pin source: `.tool-versions` and `package.json`
 
 ## Setup
@@ -52,6 +53,7 @@ Use contract validation and generation commands instead:
 - `make buf-breaking`
 - `make contracts-check`
 - `make buf-generate`
+- `make generate-check`
 
 ## Buf Baseline
 
@@ -66,10 +68,30 @@ This repository uses Buf CLI as the contract policy and validation tool.
   - `protoc-gen-go`
   - `protoc-gen-connect-go`
   - `protoc-gen-es`
+  - `protoc-gen-connect-es`
 - Baseline policy avoids paid BSR dependencies:
   - no paid remote dependencies
   - no paid remote plugin features
   - local and CI use Buf CLI directly
+
+## Code Generation
+
+Generated outputs are committed to git:
+
+- Go: `gen/go/`
+- TypeScript client sources: `packages/typescript-client/src/gen/`
+
+Generation commands:
+
+- install code generation plugins: `make install-codegen-tools`
+- regenerate artifacts: `make buf-generate`
+- verify regeneration is clean: `make generate-check`
+- compile generated Go artifacts: `make go-generated-check`
+- build TypeScript client package: `make ts-client-build`
+
+The repository installs Go plugins into a local `.bin/` directory and uses
+workspace-local Node plugin binaries from `node_modules/.bin`, so generation does
+not depend on globally installed plugin versions.
 
 ## Current Contract Scope
 
@@ -88,8 +110,24 @@ The repository includes a focused GitHub Actions workflow for Buf checks:
 
 - `buf lint`
 - `buf breaking` against `origin/main` once the baseline exists on `main`
+- generation drift check after installing the pinned local plugins
 
 This keeps the contract-policy baseline enforceable before the broader Phase 4 CI rollout.
+
+## TypeScript Client Package Baseline
+
+The generated TypeScript client package baseline lives in:
+
+- `packages/typescript-client`
+
+It is prepared for future GitHub Packages publishing with:
+
+- scoped package name
+- package exports
+- build script
+- publish registry metadata
+
+Publishing itself is still handled later in the release workflow tasks.
 
 ## Test
 

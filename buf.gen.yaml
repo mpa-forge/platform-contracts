@@ -9,8 +9,12 @@ plugins:
     opt:
       - paths=source_relative
   - local: protoc-gen-es
-    out: gen/ts
+    out: packages/typescript-client/src/gen
     opt:
       - target=ts
-      - import_extension=none
-
+      - import_extension=js
+  - local: protoc-gen-connect-es
+    out: packages/typescript-client/src/gen
+    opt:
+      - target=ts
+      - import_extension=js
