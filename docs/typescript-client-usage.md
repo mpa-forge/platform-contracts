@@ -93,3 +93,6 @@ later tasks:
 - `P2-T04`: API mounts the generated Connect handlers
 - `P2-T10`: frontend integrates the generated TypeScript client
 
+Go server usage documentation:
+
+- `docs/go-server-usage.md`
