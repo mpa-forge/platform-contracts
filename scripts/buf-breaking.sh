@@ -14,10 +14,9 @@ if ! git cat-file -e "${target_branch}:buf.yaml" 2>/dev/null; then
 	exit 0
 fi
 
-if ! git ls-tree -r --name-only "${target_branch}" -- 'proto/*.proto' 'proto/**/*.proto' | grep -q '\.proto$'; then
+if ! git ls-tree -r --name-only "${target_branch}" -- proto | grep -q '\.proto$'; then
 	echo "Skipping buf breaking: target branch '${target_branch}' has no protobuf sources yet."
 	exit 0
 fi
 
 buf breaking --against ".git#branch=${target_branch}"
-
