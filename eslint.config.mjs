@@ -3,7 +3,7 @@ import tseslint from "typescript-eslint";
 
 export default tseslint.config(
   {
-    ignores: ["dist/**", "coverage/**", "node_modules/**", ".bin/**", "gen/go/**", "packages/typescript-client/src/gen/**"]
+    ignores: ["dist/**", "**/dist/**", "coverage/**", "node_modules/**", ".bin/**", "gen/go/**", "packages/typescript-client/src/gen/**"]
   },
   js.configs.recommended,
   ...tseslint.configs.recommended,

@@ -129,6 +129,10 @@ It is prepared for future GitHub Packages publishing with:
 
 Publishing itself is still handled later in the release workflow tasks.
 
+Usage documentation:
+
+- `docs/typescript-client-usage.md`
+
 ## Test
 
 Contract validation commands:
