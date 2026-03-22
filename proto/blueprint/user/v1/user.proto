@@ -1,0 +1,32 @@
+syntax = "proto3";
+
+package blueprint.user.v1;
+
+option go_package = "github.com/mpa-forge/platform-contracts/gen/go/blueprint/user/v1;userv1";
+
+// UserService exposes authenticated user-facing contract methods that are
+// generic enough to be reused across applications built from the blueprint.
+service UserService {
+  // GetCurrentUser returns the current authenticated user profile summary for
+  // the bearer token presented to the API.
+  rpc GetCurrentUser(GetCurrentUserRequest) returns (GetCurrentUserResponse);
+}
+
+// GetCurrentUserRequest is empty because the user is resolved from the
+// authenticated request context rather than a caller-provided identifier.
+message GetCurrentUserRequest {}
+
+// GetCurrentUserResponse wraps the authenticated user profile returned by the
+// service.
+message GetCurrentUserResponse {
+  UserProfile user = 1;
+}
+
+// UserProfile contains the minimum generic identity data needed by a frontend
+// to render an authenticated session baseline.
+message UserProfile {
+  string user_id = 1;
+  string email = 2;
+  string display_name = 3;
+  string role = 4;
+}
