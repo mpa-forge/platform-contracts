@@ -1,8 +1,8 @@
 syntax = "proto3";
 
-package dynamicplaylists.platform.v1;
+package blueprint.platform.v1;
 
-option go_package = "github.com/mpa-forge/platform-contracts/gen/go/dynamicplaylists/platform/v1;platformv1";
+option go_package = "github.com/mpa-forge/platform-contracts/gen/go/blueprint/platform/v1;platformv1";
 
 // ContractBootstrap anchors the module with a valid v1 package while the first
 // service and request/response messages are introduced in P2-T02.

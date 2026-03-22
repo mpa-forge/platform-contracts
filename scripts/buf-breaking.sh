@@ -4,6 +4,11 @@ set -euo pipefail
 
 target_branch="${1:-main}"
 
+if ! git tag --list 'contracts-v*' | grep -q .; then
+	echo "Skipping buf breaking: no contract release tag exists yet."
+	exit 0
+fi
+
 if ! git rev-parse --verify "${target_branch}" >/dev/null 2>&1; then
 	echo "Skipping buf breaking: target branch '${target_branch}' is not available locally."
 	exit 0
