@@ -133,6 +133,7 @@ Usage documentation:
 
 - `docs/typescript-client-usage.md`
 - `docs/go-server-usage.md`
+- `docs/consumer-auth-usage.md`
 
 ## Test
 
