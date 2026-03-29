@@ -10,10 +10,33 @@ Before making changes:
 
 1. Read `README.md`.
 2. Read `Makefile` if present.
-3. Read `../platform-blueprint-specs/docs/shared/agent-common-operating-rules.md`.
-4. Read `../platform-blueprint-specs/docs/shared/agent-platform-workspace-map.md`.
-5. Read `../platform-blueprint-specs/docs/shared/repo-context/platform-contracts.md`.
-6. Check local repo docs under `docs/` if the task touches generation or package publishing details.
+3. Read `../platform-blueprint-specs/common/AGENTS.md`.
+4. Read `../platform-blueprint-specs/.codex/skills/automated-ai-worker/SKILL.md` when the repo is being changed by an automated AI worker or when following the same autonomous workflow manually.
+5. Read `../platform-blueprint-specs/implementation/phases/phase-2-contracts-service-skeletons-and-data-baseline.md`.
+6. Read `../platform-blueprint-specs/implementation/phase-tasks/phase-2-contracts-service-skeletons-and-data-baseline-tasks.md`.
+7. Check local repo docs under `docs/` if the task touches generation or package publishing details.
+
+## Repo Role
+
+- Own protobuf contracts as the single source of truth for backend and frontend clients.
+- Generate Go and TypeScript artifacts.
+- Publish the generated TypeScript client package to GitHub Packages.
+
+## Relevant Shared Constraints
+
+- Buf usage is CLI-only in local and CI for baseline; no paid BSR dependency.
+- Generated TypeScript client is intended for GitHub Packages publishing.
+- Generated artifacts are committed to git as part of normal development flow.
+
+## Consult Conditionally
+
+- `../platform-blueprint-specs/platform-specification.md` only when the task needs broader stack or release-policy context.
+
+## Typical Validation
+
+- repo-local generation command once introduced
+- `make lint`
+- `make format-check`
 
 ## Priority of Instructions
 
