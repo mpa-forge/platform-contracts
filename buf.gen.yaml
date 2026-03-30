@@ -12,9 +12,9 @@ plugins:
     out: packages/typescript-client/src/gen
     opt:
       - target=ts
-      - import_extension=js
+      - import_extension=.js
   - local: protoc-gen-connect-es
     out: packages/typescript-client/src/gen
     opt:
       - target=ts
-      - import_extension=js
+      - import_extension=.js
