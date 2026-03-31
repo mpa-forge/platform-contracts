@@ -12,10 +12,9 @@ Before making changes:
 2. Read `Makefile` if present.
 3. Run `make sync-agent-skills` before starting major changes or when shared skill guidance may have changed.
 4. Read `../platform-blueprint-specs/common/AGENTS.md`.
-5. Read `.codex/skills/automated-ai-worker/SKILL.md` when the repo is being changed by an automated AI worker or when following the same autonomous workflow manually.
-6. Read `../platform-blueprint-specs/implementation/phases/phase-2-contracts-service-skeletons-and-data-baseline.md`.
-7. Read `../platform-blueprint-specs/implementation/phase-tasks/phase-2-contracts-service-skeletons-and-data-baseline-tasks.md`.
-8. Check local repo docs under `docs/` if the task touches generation or package publishing details.
+5. Read `../platform-blueprint-specs/implementation/phases/phase-2-contracts-service-skeletons-and-data-baseline.md`.
+6. Read `../platform-blueprint-specs/implementation/phase-tasks/phase-2-contracts-service-skeletons-and-data-baseline-tasks.md`.
+7. Check local repo docs under `docs/` if the task touches generation or package publishing details.
 
 ## Repo Role
 
@@ -32,11 +31,6 @@ Before making changes:
 ## Consult Conditionally
 
 - `../platform-blueprint-specs/platform-specification.md` only when the task needs broader stack or release-policy context.
-
-## Shared Managed Skills
-
-Run `make sync-agent-skills` before major changes so the local common skill
-copies stay current.
 
 ## Typical Validation
 
