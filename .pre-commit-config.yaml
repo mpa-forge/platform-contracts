@@ -31,3 +31,4 @@ repos:
         entry: make repo-format-check
         language: system
         pass_filenames: false
+        stages: [pre-push]

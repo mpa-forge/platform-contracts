@@ -38,11 +38,14 @@ If `mise` or `asdf` is available, the script will use it to install the pinned t
 
 ## Lint and Format
 
-- Install git hooks: `make precommit-install`
+- Install git hooks (`pre-commit` and `pre-push`): `make precommit-install`
 - Run all pre-commit checks manually: `make precommit-run`
 - Run repo lint checks: `make lint`
 - Apply formatting: `make format`
 - Check formatting only: `make format-check`
+
+The installed `pre-push` hook runs the repo format check so badly formatted
+changes are blocked before a branch is pushed for PR or merge.
 
 ## Run
 
@@ -137,6 +140,21 @@ Usage documentation:
 - `docs/typescript-client-usage.md`
 - `docs/go-server-usage.md`
 - `docs/consumer-auth-usage.md`
+
+## Contract Release Workflow
+
+Released contract consumption is documented in:
+
+- `docs/contract-release-workflow.md`
+- `docs/contract-release-checklist.md`
+
+These documents define:
+
+- `contracts-vX.Y.Z` release tags
+- semantic version rules for patch, minor, and major releases
+- TypeScript package version alignment with release tags
+- GitHub Packages consumer bootstrap and install expectations
+- the pre-release validation and documentation checklist maintainers follow
 
 ## Test
 

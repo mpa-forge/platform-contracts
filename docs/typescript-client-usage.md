@@ -46,12 +46,12 @@ import { createConnectTransport } from "@connectrpc/connect-web";
 import {
   EnsureCurrentUserProfileRequest,
   GetCurrentUserRequest,
-  UserService,
+  UserService
 } from "@mpa-forge/platform-contracts-client";
 
 const transport = createConnectTransport({
   baseUrl: "http://localhost:8080",
-  useBinaryFormat: false,
+  useBinaryFormat: false
 });
 
 const client = createClient(UserService, transport);
@@ -74,16 +74,54 @@ The consuming application code should still import from:
 That keeps application code stable when the dependency source later changes from
 workspace-local to GitHub Packages.
 
-## Published Package Usage
+## Released Package Usage
 
-After the release workflow is implemented, the same package will be consumed from
-GitHub Packages.
+Released package usage is tied to the contract release workflow.
 
-The intended consumer behavior does not change:
+Release boundary:
 
-- install `@mpa-forge/platform-contracts-client`
-- keep importing the generated service and messages from the package
-- keep `@connectrpc/connect-web` as the browser transport dependency in the frontend
+- `contracts-vX.Y.Z` tag
+
+Matching package version:
+
+- `X.Y.Z`
+
+Examples:
+
+- `contracts-v0.1.1` -> install `@mpa-forge/platform-contracts-client@0.1.1`
+- `contracts-v0.2.0` -> install `@mpa-forge/platform-contracts-client@0.2.0`
+
+Consumers should pin a released package version instead of following floating
+mainline artifacts.
+
+### Bun/NPM GitHub Packages Bootstrap
+
+Consumers must authenticate to GitHub Packages without committing credentials.
+A typical user-level setup looks like:
+
+```ini
+@mpa-forge:registry=https://npm.pkg.github.com
+//npm.pkg.github.com/:_authToken=${GITHUB_PACKAGES_TOKEN}
+```
+
+Recommended pattern:
+
+- keep registry auth in user-level `.npmrc` or CI environment configuration
+- provide `GITHUB_PACKAGES_TOKEN` through local environment or CI secrets
+- do not commit registry credentials into the consuming repository
+
+Install examples:
+
+```bash
+npm install @mpa-forge/platform-contracts-client@0.1.1
+```
+
+```bash
+bun add @mpa-forge/platform-contracts-client@0.1.1
+```
+
+The consuming frontend code should not need to change when moving from local
+workspace usage to GitHub Packages usage.
 
 ## Current Scope And Limits
 
@@ -103,3 +141,4 @@ Go server usage documentation:
 
 - `docs/go-server-usage.md`
 - `docs/consumer-auth-usage.md`
+- `docs/contract-release-workflow.md`

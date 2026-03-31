@@ -75,7 +75,7 @@ import { createConnectTransport } from "@connectrpc/connect-web";
 import {
   EnsureCurrentUserProfileRequest,
   GetCurrentUserRequest,
-  UserService,
+  UserService
 } from "@mpa-forge/platform-contracts-client";
 
 const transport = createConnectTransport({
@@ -85,8 +85,8 @@ const transport = createConnectTransport({
     (next) => async (req) => {
       req.header.set("Authorization", `Bearer ${sessionToken}`);
       return next(req);
-    },
-  ],
+    }
+  ]
 });
 
 const client = createClient(UserService, transport);
