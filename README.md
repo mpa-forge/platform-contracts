@@ -138,6 +138,21 @@ Usage documentation:
 - `docs/go-server-usage.md`
 - `docs/consumer-auth-usage.md`
 
+## Contract Release Workflow
+
+Released contract consumption is documented in:
+
+- `docs/contract-release-workflow.md`
+- `docs/contract-release-checklist.md`
+
+These documents define:
+
+- `contracts-vX.Y.Z` release tags
+- semantic version rules for patch, minor, and major releases
+- TypeScript package version alignment with release tags
+- GitHub Packages consumer bootstrap and install expectations
+- the pre-release validation and documentation checklist maintainers follow
+
 ## Test
 
 Contract validation commands:

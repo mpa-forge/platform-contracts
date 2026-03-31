@@ -29,8 +29,8 @@ Backend code typically imports two generated packages:
 
 ```go
 import (
-	userv1 "github.com/mpa-forge/platform-contracts/gen/go/blueprint/user/v1"
-	"github.com/mpa-forge/platform-contracts/gen/go/blueprint/user/v1/userv1connect"
+    userv1 "github.com/mpa-forge/platform-contracts/gen/go/blueprint/user/v1"
+    "github.com/mpa-forge/platform-contracts/gen/go/blueprint/user/v1/userv1connect"
 )
 ```
 
@@ -53,26 +53,26 @@ Example:
 package userserver
 
 import (
-	"context"
+    "context"
 
-	"connectrpc.com/connect"
-	userv1 "github.com/mpa-forge/platform-contracts/gen/go/blueprint/user/v1"
+    "connectrpc.com/connect"
+    userv1 "github.com/mpa-forge/platform-contracts/gen/go/blueprint/user/v1"
 )
 
 type Server struct{}
 
 func (s *Server) GetCurrentUser(
-	ctx context.Context,
-	req *connect.Request[userv1.GetCurrentUserRequest],
+    ctx context.Context,
+    req *connect.Request[userv1.GetCurrentUserRequest],
 ) (*connect.Response[userv1.GetCurrentUserResponse], error) {
-	return connect.NewResponse(&userv1.GetCurrentUserResponse{
-		User: &userv1.UserProfile{
-			UserId:      "user_123",
-			Email:       "user@example.com",
-			DisplayName: "Example User",
-			Role:        "user",
-		},
-	}), nil
+    return connect.NewResponse(&userv1.GetCurrentUserResponse{
+        User: &userv1.UserProfile{
+            UserId:      "user_123",
+            Email:       "user@example.com",
+            DisplayName: "Example User",
+            Role:        "user",
+        },
+    }), nil
 }
 ```
 
@@ -93,19 +93,34 @@ shape is:
 package api
 
 import (
-	"github.com/go-chi/chi/v5"
-	"github.com/mpa-forge/platform-contracts/gen/go/blueprint/user/v1/userv1connect"
+    "github.com/go-chi/chi/v5"
+    "github.com/mpa-forge/platform-contracts/gen/go/blueprint/user/v1/userv1connect"
 )
 
 func NewRouter(userHandler userv1connect.UserServiceHandler) *chi.Mux {
-	router := chi.NewRouter()
+    router := chi.NewRouter()
 
-	path, handler := userv1connect.NewUserServiceHandler(userHandler)
-	router.Mount(path, handler)
+    path, handler := userv1connect.NewUserServiceHandler(userHandler)
+    router.Mount(path, handler)
 
-	return router
+    return router
 }
 ```
+
+## Released Contract Consumption
+
+When consuming `platform-contracts` outside the local sibling-workspace setup,
+Go maintainers should treat released contract versions as the upgrade boundary.
+
+That means:
+
+- prefer deliberate upgrades against released `platform-contracts` versions
+- avoid treating `main` as the default reusable dependency source
+- keep Go consumer upgrades explicit in PRs or dependency-update work
+
+This release expectation is documented in:
+
+- `docs/contract-release-workflow.md`
 
 ## Why `chi` Is Separate From Code Generation
 
