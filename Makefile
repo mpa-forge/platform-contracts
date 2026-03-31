@@ -9,11 +9,13 @@ PROTOC_GEN_CONNECT_GO_VERSION := v1.19.1
 PROTOC_GEN_ES_VERSION := 1.10.1
 PROTOC_GEN_CONNECT_ES_VERSION := 1.7.0
 
-.PHONY: help bootstrap doctor install-tools check-tools print-toolchain install-dev-tools install-codegen-tools precommit-install precommit-run lint format format-check repo-lint repo-format repo-format-check buf-lint buf-breaking buf-generate generate-check go-generated-check ts-client-build contracts-check contracts-check-ci
+.PHONY: help bootstrap doctor sync-agent-skills sync-agent-skills-check install-tools check-tools print-toolchain install-dev-tools install-codegen-tools precommit-install precommit-run lint format format-check repo-lint repo-format repo-format-check buf-lint buf-breaking buf-generate generate-check go-generated-check ts-client-build contracts-check contracts-check-ci
 
 help:
 	@echo "Targets:"
 	@echo "  bootstrap         Install toolchain when possible and run baseline setup"
+	@echo "  sync-agent-skills Refresh managed common skills from sibling platform-blueprint-specs"
+	@echo "  sync-agent-skills-check Fail if managed common skills drift from sibling platform-blueprint-specs"
 	@echo "  doctor            Run shared workstation checks from sibling platform-blueprint-specs"
 	@echo "  install-tools     Install pinned tools with mise/asdf if available"
 	@echo "  check-tools       Validate pinned tool versions"
@@ -37,7 +39,25 @@ help:
 bootstrap: install-tools check-tools install-dev-tools install-codegen-tools
 	npm ci
 
-doctor:
+sync-agent-skills:
+	@if [[ -f ../platform-blueprint-specs/scripts/sync-common-skills.sh ]]; then \
+		bash ../platform-blueprint-specs/scripts/sync-common-skills.sh --repo-root "$$(pwd)"; \
+	else \
+		echo "Shared skill sync script not found at ../platform-blueprint-specs/scripts/sync-common-skills.sh" >&2; \
+		echo "Keep platform-blueprint-specs as a sibling checkout to use make sync-agent-skills in this workspace." >&2; \
+		exit 1; \
+	fi
+
+sync-agent-skills-check:
+	@if [[ -f ../platform-blueprint-specs/scripts/sync-common-skills.sh ]]; then \
+		bash ../platform-blueprint-specs/scripts/sync-common-skills.sh --check --repo-root "$$(pwd)"; \
+	else \
+		echo "Shared skill sync script not found at ../platform-blueprint-specs/scripts/sync-common-skills.sh" >&2; \
+		echo "Keep platform-blueprint-specs as a sibling checkout to use make sync-agent-skills-check in this workspace." >&2; \
+		exit 1; \
+	fi
+
+doctor: sync-agent-skills
 	@if [[ -f ../platform-blueprint-specs/scripts/windows-tooling-doctor.ps1 ]]; then \
 		powershell -ExecutionPolicy Bypass -File ../platform-blueprint-specs/scripts/windows-tooling-doctor.ps1; \
 	else \
