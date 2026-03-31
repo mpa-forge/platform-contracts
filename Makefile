@@ -103,7 +103,7 @@ install-codegen-tools:
 	bash scripts/install-codegen-tools.sh
 
 precommit-install: install-dev-tools
-	python -m pre_commit install
+	python -m pre_commit install --hook-type pre-commit --hook-type pre-push
 
 precommit-run:
 	python -m pre_commit run --all-files --show-diff-on-failure

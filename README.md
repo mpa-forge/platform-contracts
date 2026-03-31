@@ -38,11 +38,14 @@ If `mise` or `asdf` is available, the script will use it to install the pinned t
 
 ## Lint and Format
 
-- Install git hooks: `make precommit-install`
+- Install git hooks (`pre-commit` and `pre-push`): `make precommit-install`
 - Run all pre-commit checks manually: `make precommit-run`
 - Run repo lint checks: `make lint`
 - Apply formatting: `make format`
 - Check formatting only: `make format-check`
+
+The installed `pre-push` hook runs the repo format check so badly formatted
+changes are blocked before a branch is pushed for PR or merge.
 
 ## Run
 
